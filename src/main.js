@@ -43,9 +43,11 @@ const lockImg = cocoscii(`
   if (idx === 0) {
     style.fill = "";
     style.stroke = "#000";
-  } else {
+  } else if (idx === 1){
     style.fill = "#000"
-    style.stroke = "#fff";
+    style.stroke = "";
+  } else {
+    style.fill = "#fff";
   }
 
 });
