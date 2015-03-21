@@ -25,8 +25,6 @@ function cocoscii (rep, styles, scale = 4) {
   canvas.width = width * scale;
   canvas.height = height * scale;
 
-  console.log(width, height)
-
   // Get the control points
   const points = lines
     .map((l, y) => l.map((ch, x) => {return {
@@ -74,7 +72,6 @@ function cocoscii (rep, styles, scale = 4) {
       ctx.beginPath();
       ctx.moveTo(points[0].x, [points[0].y]);
       points.slice(1).forEach(p => {
-        console.log(p.x, p.y);
         ctx.lineTo(p.x, p.y)
       });
       break;
