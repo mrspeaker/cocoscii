@@ -1,7 +1,8 @@
 # Cocoscii
 
-Javascript version of https://github.com/cparnot/ASCIImage.
-by Mr Speaker
+Javascript (ES2015) version of the incredibly neat-o [ASCIImage](https://github.com/cparnot/ASCIImage) by Charles Parnot (I think)!
+
+This version by Mr Speaker. Usage looks like this:
 
       const closeImg = cocoscii(`
         · · · · 1 1 1 · · · ·
