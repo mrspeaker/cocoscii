@@ -25,7 +25,7 @@ This version by Mr Speaker. Usage looks like this:
       }
 
     });
-    
+
 Produces images like:
 
 ![closeicon](https://cloud.githubusercontent.com/assets/129330/6765643/432159c6-cfc0-11e4-80e5-5c7e2071b0a1.png)
@@ -37,4 +37,12 @@ Produces images like:
 * lock image stoke incorrect
 * implement "ASCIIContextShouldClose"
 * I just hacked this together in a hour, so... prolly lots more!
+
+## Building
+
+No dependencies, so run in a ES2015-y browser - otherwise, build with `jspm`:
+
+    jspm install
+
+This project uses the `Babel` transpiler, but `Traceur` should work too. The only important file is `src/cocoscii.js`.
 

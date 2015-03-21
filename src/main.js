@@ -12,12 +12,12 @@ const closeImg = cocoscii(`
     · 1 · · · · · · · 1 ·
     · · 1 · · · · · 1 · ·
     · · · 1 1 1 1 1 · · ·
-`, (idx, dict) => {
+`, (idx, style) => {
 
   if (idx === 0) {
-    dict.fill = "#000";
+    style.fill = "#000";
   } else {
-    dict.stroke = "#fff";
+    style.stroke = "#fff";
   }
 
 });
@@ -38,14 +38,14 @@ const lockImg = cocoscii(`
     · · · · · · · B E · · · · · ·
     · · · · · · · · · · · · · · ·
     · · 6 · · · · · · · · · · 5 ·
-`, (idx, dict) => {
+`, (idx, style) => {
 
   if (idx === 0) {
-    dict.fill = "";
-    dict.stroke = "#000";
+    style.fill = "";
+    style.stroke = "#000";
   } else {
-    dict.fill = "#000"
-    dict.stroke = "#fff";
+    style.fill = "#000"
+    style.stroke = "#fff";
   }
 
 });
