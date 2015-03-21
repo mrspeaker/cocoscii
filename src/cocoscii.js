@@ -3,15 +3,13 @@
   styles: A function to mutate the style dictionary. (shapeIndex: Number, dictionary: Object) => {}
   scale: Factor to scale the final image by.
 */
-function cocoscii (rep, styles, scale = 4) {
+function cocoscii (rep, styles = (idx, dict) => {}, scale = 4) {
 
   styleDict = {
     fill: "#000",
     stroke: "",
     lineWidth: "1"
   };
-
-  styles = styles || (idx, dict) => {};
 
   let canvas = document.createElement("canvas");
   let ctx = canvas.getContext("2d");
