@@ -1,6 +1,6 @@
 # Cocoscii
 
-Javascript (ES2015) version of the incredibly neat-o [ASCIImage](https://github.com/cparnot/ASCIImage) by Charles Parnot (I think)!
+Javascript (ES2015) version of the incredibly neat-o [ASCIImage](https://github.com/cparnot/ASCIImage) by Charles Parnot!
 
 This version by Mr Speaker. Usage looks like this:
 
@@ -16,12 +16,12 @@ This version by Mr Speaker. Usage looks like this:
         · 1 · · · · · · · 1 ·
         · · 1 · · · · · 1 · ·
         · · · 1 1 1 1 1 · · ·
-    `, (idx, dict) => {
+    `, (idx, style) => {
 
       if (idx === 0) {
-        dict.fill = "#000";
+        style.fill = "#000";
       } else {
-        dict.stroke = "#fff";
+        style.stroke = "#fff";
       }
 
     });
@@ -29,7 +29,7 @@ This version by Mr Speaker. Usage looks like this:
 Produces images like:
 
 ![closeicon](https://cloud.githubusercontent.com/assets/129330/6765643/432159c6-cfc0-11e4-80e5-5c7e2071b0a1.png)
-![lockimage](https://cloud.githubusercontent.com/assets/129330/6765644/452c24da-cfc0-11e4-8b56-c6eccb8f2116.png)
+![lockicon](https://cloud.githubusercontent.com/assets/129330/6767176/cd748e3e-cff9-11e4-8ed7-d8b5467a8bfb.png)
 
 ## TODO:
 
