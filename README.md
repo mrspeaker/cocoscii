@@ -33,10 +33,8 @@ Produces images like:
 
 ## TODO:
 
-* fix stroke overlapping canvas edges
-* lock image stoke incorrect
 * implement "ASCIIContextShouldClose"
-* I just hacked this together in a hour, so... prolly lots more!
+* layers!
 
 ## Building
 
