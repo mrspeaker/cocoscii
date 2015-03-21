@@ -36,4 +36,5 @@ Produces images like:
 * fix stroke overlapping canvas edges
 * lock image stoke incorrect
 * implement "ASCIIContextShouldClose"
-* Do "dots" work?
+* I just hacked this together in a hour, so... prolly lots more!
+
