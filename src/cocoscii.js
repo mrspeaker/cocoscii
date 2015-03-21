@@ -106,60 +106,45 @@ function cocoscii (rep, styles = (idx, dict) => {}, scale = 4) {
 
 function makeShapes (points) {
 
-  const shapes = points.reduce((shps, p) => {
+  const shapes = points.reduce(({cur, shapes}, p) => {
 
-    const newShape = p => { return {
-      cur: {
+    function newShape (p) {
+      return {
         type: "path",
         points: [p]
-      },
-      all: shps.all
-    }};
+      }
+    };
 
-    // TODO: refactor shape makin'
-
-    let cur = shps.cur;
     if (!cur) {
-      // New Shape
-      return newShape(p);
+      return {
+        cur: newShape(p),
+        shapes
+      }
     }
 
     const last = cur.points.slice(-1)[0];
 
-    // Another point in the path, or new shape if circle
-    if (p.idx == last.idx + 1) {
-      if (cur.type != "path") {
-        shps.all.push(cur);
-        return newShape(p);
-      }
+    // Another point in the path
+    if (p.idx == last.idx + 1 && cur.type == "path") {
       cur.points.push(p);
-      return {
-        cur: cur,
-        all: shps.all
-      }
     }
-
-    // New shape
-    if (p.idx > last.idx + 1) {
-      shps.all.push(cur);
-      return newShape(p);
-    }
-
     // line or circle
-    if (p.idx === last.idx) {
+    else if (p.idx === last.idx) {
       cur.points.push(p);
-      return {
-        cur: {
-          type: cur.points.length < 3 ? "line" : "circle",
-          points: cur.points
-        },
-        all: shps.all
-      }
+      cur.type = cur.points.length < 3 ? "line" : "circle"
+    }
+    // New shape.
+    else {
+      shapes.push(cur);
+      cur = newShape(p);
     }
 
-  }, {cur: null, all:[]});
+    return { cur, shapes }
 
-  return [...shapes.all, shapes.cur];
+  }, {cur: null, shapes:[]});
+
+  // Don't forget final shape (from .cur)!
+  return [...shapes.shapes, shapes.cur];
 
 }
 
