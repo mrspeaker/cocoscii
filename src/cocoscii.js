@@ -57,7 +57,7 @@ function makeShapes ([head, ...tail]) {
     const last = cur.points.slice(-1)[0];
 
     // Another point in the path
-    if (p.idx === last.idx + 1 && ["dot", "path"].contains(cur.type) != -1) {
+    if (p.idx === last.idx + 1 && ["dot", "path"].indexOf(cur.type) != -1) {
       cur.points.push(p);
       cur.type = "path";
     }
