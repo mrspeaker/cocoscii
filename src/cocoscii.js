@@ -5,131 +5,54 @@
 */
 function cocoscii (rep, styles = (idx, dict) => {}, scale = 4) {
 
-  styleDict = {
-    fill: "#000",
-    stroke: "",
-    lineWidth: "1"
-  };
-
-  let canvas = document.createElement("canvas");
-  let ctx = canvas.getContext("2d");
-  let img = new Image();
-
   const order = "123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnpqrstuvwxyz";
 
-  const lines = rep
+  const rows = rep
     .split("\n")
     .filter(l => l !== "")
     .map(l => l.split("").filter(ch => ch != " "))
 
-  const width = lines.reduce((ac, el) => Math.max(ac, el.length), 0);
-  const height = lines.length;
-
-  canvas.width = width * scale;
-  canvas.height = height * scale;
+  const width = rows.reduce((max, row) => Math.max(max, row.length), 0);
+  const height = rows.length;
 
   // Get the control points
-  const points = lines
-    .map((l, y) => l.map((ch, x) => {return {
+  const points = rows
+    .map((l, y) => l.map((ch, x) => { return {
       idx: order.indexOf(ch),
       ch, x, y
     }}))
-    .reduce((flt, ar) => [...flt, ...ar],[]) // Flatten
+    .reduce((flt, ar) => [...flt, ...ar], []) // Flatten
     .filter(p => p.idx != -1)
     .sort((p1, p2) => p1.idx - p2.idx);
 
   // Turn them into shapes
   const shapes = makeShapes(points);
 
-  // Draw them!
-  ctx.save();
-  ctx.scale(scale, scale);
+  // ...and draw them
+  const canvas = drawShapes(
+    shapes,
+    styles,
+    width,
+    height,
+    scale);
 
-  function getBBox ([{x, y}, ...tailPoints]) {
-    return tailPoints.reduce(({min, max}, {x, y}) => {
-      if (x < min.x) min.x = x;
-      if (x > max.x) max.x = x;
-      if (y < min.y) min.y = y;
-      if (y > max.y) max.y = y;
-      return {min, max};
-    }, {min: {x, y}, max: {x, y}});
-  }
-
-  shapes.forEach((s, i) => {
-
-    styles(i, styleDict); // Change the styles as needed
-
-    const {type, points} = s;
-    const {fill, stroke, lineWidth} = styleDict;
-
-    ctx.fillStyle = fill;
-    ctx.strokeStyle = stroke;
-    ctx.lineWidth = lineWidth;
-
-    switch (type) {
-
-    case "dot":
-      if (fill) ctx.fillRect(points[0].x, points[0].y, 0.1, 0.1); // errrm, why 0.1?
-      if (stroke) ctx.strokeRect(points[0].x, points[0].y, 0.1, 0.1);
-      break;
-
-    case "path":
-    case "line":
-      const [{x, y}, ...tail] = points;
-      ctx.beginPath();
-      ctx.moveTo(x, y);
-      tail.forEach(({x, y}) => {
-        ctx.lineTo(x, y);
-      });
-      if (fill) ctx.fill();
-      if (stroke) ctx.stroke();
-      break;
-
-    case "circle":
-      // Get "bounding box" of the circle
-      const {min, max} = getBBox(points);
-      const w = max.x - min.x;
-      const h = max.y - min.y;
-      const circ = Math.max(w, h);
-      // Draw an elipse to fit
-      ctx.save();
-      ctx.translate(min.x + w / 2, min.y + h / 2);
-      ctx.scale(w / circ, h / circ);
-      ctx.beginPath();
-      ctx.arc(0, 0, circ / 2, 0, Math.PI * 2, false);
-      ctx.restore();
-      if (fill) ctx.fill();
-      if (stroke) ctx.stroke();
-      break;
-
-    }
-
-  })
-
-  ctx.restore();
+  // Save to image
+  const img = new Image();
   img.src = canvas.toDataURL("image/png");
-
   return img;
 
 }
 
-function makeShapes (points) {
+function makeShapes ([head, ...tail]) {
 
-  const shapes = points.reduce(({cur, shapes}, p) => {
-
-    function newShape (p) {
-      return {
-        type: "dot",
-        points: [p]
-      }
+  function newShape (p) {
+    return {
+      type: "dot",
+      points: [p]
     };
+  }
 
-    if (!cur) {
-      return {
-        cur: newShape(p),
-        shapes
-      }
-    }
+  const shapes = tail.reduce(({cur, shapes}, p) => {
 
     const last = cur.points.slice(-1)[0];
 
@@ -141,7 +64,7 @@ function makeShapes (points) {
     // line or circle
     else if (p.idx === last.idx) {
       cur.points.push(p);
-      cur.type = cur.points.length < 3 ? "line" : "circle"
+      cur.type = cur.points.length < 3 ? "line" : "circle";
     }
     // New shape.
     else {
@@ -149,14 +72,97 @@ function makeShapes (points) {
       cur = newShape(p);
     }
 
-    return { cur, shapes }
+    return { cur, shapes };
 
-  }, {cur: null, shapes:[]});
+  }, {cur: newShape(head), shapes:[]});
 
-  // Don't forget final shape (from .cur)!
+  // Don't forget final shape!
   return [...shapes.shapes, shapes.cur];
 
 }
 
-export default cocoscii;
+function drawShapes (shapes, styles, width, height, scale) {
 
+  let styleDict = {
+    fill: "#000",
+    stroke: "",
+    lineWidth: "1"
+  };
+
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+
+  canvas.width = width * scale;
+  canvas.height = height * scale;
+
+  function getBBox ([{x, y}, ...tailPoints]) {
+    return tailPoints.reduce(({min, max}, {x, y}) => {
+      if (x < min.x) min.x = x;
+      if (x > max.x) max.x = x;
+      if (y < min.y) min.y = y;
+      if (y > max.y) max.y = y;
+      return {min, max};
+    }, {min: {x, y}, max: {x, y}});
+  }
+
+  ctx.save();
+  ctx.scale(scale, scale);
+
+  shapes.forEach((s, i) => {
+
+    styles(i, styleDict); // Apply styles function to mutate the shape's styles
+
+    const {type, points} = s;
+    const [{x, y}, ...tail] = points;
+    const {fill, stroke, lineWidth} = styleDict;
+
+    ctx.fillStyle = fill;
+    ctx.strokeStyle = stroke;
+    ctx.lineWidth = lineWidth;
+
+    switch (type) {
+
+    case "dot":
+      if (fill) ctx.fillRect(x, y, 0.1, 0.1); // errrm, why 0.1?
+      if (stroke) ctx.strokeRect(x, y, 0.1, 0.1);
+      break;
+
+    case "path":
+    case "line":
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      tail.forEach(({x, y}) => ctx.lineTo(x, y));
+
+      if (fill) ctx.fill();
+      if (stroke) ctx.stroke();
+      break;
+
+    case "circle":
+      // Get "bounding box" of the circle
+      const {min, max} = getBBox(points);
+      const [w, h] = [max.x - min.x, max.y - min.y];
+      const circ = Math.max(w, h);
+
+      // Draw an elipse to fit
+      ctx.save();
+      ctx.translate(min.x + w / 2, min.y + h / 2);
+      ctx.scale(w / circ, h / circ);
+      ctx.beginPath();
+      ctx.arc(0, 0, circ / 2, 0, Math.PI * 2, false);
+      ctx.restore();
+
+      if (fill) ctx.fill();
+      if (stroke) ctx.stroke();
+      break;
+
+    }
+
+  });
+
+  ctx.restore();
+
+  return canvas;
+
+}
+
+export default cocoscii;
