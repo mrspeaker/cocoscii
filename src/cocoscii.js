@@ -123,8 +123,9 @@ function drawShapes (shapes, styles, width, height, scale) {
     switch (type) {
 
     case "dot":
-      if (fill) ctx.fillRect(x, y, 0.1, 0.1); // errrm, why 0.1?
-      if (stroke) ctx.strokeRect(x, y, 0.1, 0.1);
+      const args = [x, y, 1 / width, 1 / height];
+      if (fill) ctx.fillRect(...args);
+      if (stroke) ctx.strokeRect(...args);
       break;
 
     case "path":
