@@ -9,15 +9,15 @@ function cocoscii (rep, styles = (idx, dict) => {}, scale = 4) {
 
   const rows = rep
     .split("\n")
-    .filter(l => l !== "")
-    .map(l => l.split("").filter(ch => ch != " "))
+    .filter(r => r !== "")
+    .map(r => r.split("").filter(ch => ch != " "));
 
   const width = rows.reduce((max, row) => Math.max(max, row.length), 0);
   const height = rows.length;
 
   // Get the control points
   const points = rows
-    .map((l, y) => l.map((ch, x) => { return {
+    .map((r, y) => r.map((ch, x) => { return {
       idx: order.indexOf(ch),
       ch, x, y
     }}))
@@ -57,7 +57,7 @@ function makeShapes ([head, ...tail]) {
     const last = cur.points.slice(-1)[0];
 
     // Another point in the path
-    if (p.idx == last.idx + 1 && ["dot", "path"].indexOf(cur.type) >= 0) {
+    if (p.idx === last.idx + 1 && ["dot", "path"].contains(cur.type) != -1) {
       cur.points.push(p);
       cur.type = "path";
     }
@@ -72,7 +72,7 @@ function makeShapes ([head, ...tail]) {
       cur = newShape(p);
     }
 
-    return { cur, shapes };
+    return {cur, shapes};
 
   }, {cur: newShape(head), shapes:[]});
 
