@@ -54,15 +54,15 @@ function makeShapes ([head, ...tail]) {
 
   const shapes = tail.reduce(({cur, shapes}, p) => {
 
-    const last = cur.points.slice(-1)[0];
+    const prev = cur.points.slice(-1)[0];
 
     // Another point in the path
-    if (p.idx === last.idx + 1 && ["dot", "path"].indexOf(cur.type) != -1) {
+    if (p.idx === prev.idx + 1 && ["dot", "path"].indexOf(cur.type) != -1) {
       cur.points.push(p);
       cur.type = "path";
     }
     // line or circle
-    else if (p.idx === last.idx) {
+    else if (p.idx === prev.idx) {
       cur.points.push(p);
       cur.type = cur.points.length < 3 ? "line" : "circle";
     }
