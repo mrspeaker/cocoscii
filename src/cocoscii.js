@@ -9,19 +9,20 @@ function cocoscii (rep, styles = (idx, dict) => {}, scale = 4) {
 
   const rows = rep
     .split("\n")
-    .filter(r => r !== "")
+    .filter(r => !r.match(/^\s*$/))
     .map(r => r.split("").filter(ch => ch != " "));
 
   const width = rows.reduce((max, row) => Math.max(max, row.length), 0);
   const height = rows.length;
 
+console.log(width, height)
   // Get the control points
   const points = rows
     .map((r, y) => r.map((ch, x) => { return {
       idx: order.indexOf(ch),
       ch, x, y
     }}))
-    .reduce((flt, ar) => [...flt, ...ar], []) // Flatten
+    .reduce((flt, r) => [...flt, ...r], []) // Flatten
     .filter(p => p.idx != -1)
     .sort((p1, p2) => p1.idx - p2.idx);
 
@@ -95,8 +96,8 @@ function drawShapes (shapes, styles, width, height, scale) {
   canvas.width = width * scale;
   canvas.height = height * scale;
 
-  function getBBox ([{x, y}, ...tailPoints]) {
-    return tailPoints.reduce(({min, max}, {x, y}) => {
+  function getBBox ([{x, y}, ...tail]) {
+    return tail.reduce(({min, max}, {x, y}) => {
       if (x < min.x) min.x = x;
       if (x > max.x) max.x = x;
       if (y < min.y) min.y = y;
@@ -108,11 +109,10 @@ function drawShapes (shapes, styles, width, height, scale) {
   ctx.save();
   ctx.scale(scale, scale);
 
-  shapes.forEach((s, i) => {
+  shapes.forEach(({type, points}, i) => {
 
     styles(i, styleDict); // Apply function to mutate the shape's styles
 
-    const {type, points} = s;
     const [{x, y}, ...tail] = points;
     const {fill, stroke, lineWidth} = styleDict;
 
@@ -123,6 +123,7 @@ function drawShapes (shapes, styles, width, height, scale) {
     switch (type) {
 
     case "dot":
+      // TODO: this is not correct. See "gridImg" test case
       const args = [x, y, 1 / width, 1 / height];
       if (fill) ctx.fillRect(...args);
       if (stroke) ctx.strokeRect(...args);
