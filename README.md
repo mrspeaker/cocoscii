@@ -1,6 +1,6 @@
 # Cocoscii
 
-This is a javascript (ES2015) version of the yesterday's neat-o hack [ASCIImage](http://asciimage.org/) by Charles Parnot. ASCIImage lets you create icons by defining some control points for drawing lines, paths, and circles. You can also style each shape individually. [Read all about the original project](http://cocoamine.net/blog/2015/03/20/replacing-photoshop-with-nsstring/), then come back here.
+This is a javascript (ES2015) version of yesterday's neat-o hack [ASCIImage](http://asciimage.org/) by Charles Parnot. ASCIImage lets you create icons by defining some control points for drawing lines, paths, and circles. You can also style each shape individually. [Read all about the original project](http://cocoamine.net/blog/2015/03/20/replacing-photoshop-with-nsstring/), then come back here.
 
 This is the JavaScript version by Mr Speaker, and creates standard DOM images (see [cocoscii.js](https://github.com/mrspeaker/cocoscii/blob/master/src/cocoscii.js) for the ES6). Usage looks like this:
 
