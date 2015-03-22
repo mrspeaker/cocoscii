@@ -68,6 +68,11 @@ function cocoscii (rep, styles = (idx, dict) => {}, scale = 4) {
 
     switch (type) {
 
+    case "dot":
+      if (fill) ctx.fillRect(points[0].x, points[0].y, 0.1, 0.1); // errrm, why 0.1?
+      if (stroke) ctx.strokeRect(points[0].x, points[0].y, 0.1, 0.1);
+      break;
+
     case "path":
     case "line":
       const [{x, y}, ...tail] = points;
@@ -76,6 +81,8 @@ function cocoscii (rep, styles = (idx, dict) => {}, scale = 4) {
       tail.forEach(({x, y}) => {
         ctx.lineTo(x, y);
       });
+      if (fill) ctx.fill();
+      if (stroke) ctx.stroke();
       break;
 
     case "circle":
@@ -91,10 +98,12 @@ function cocoscii (rep, styles = (idx, dict) => {}, scale = 4) {
       ctx.beginPath();
       ctx.arc(0, 0, circ / 2, 0, Math.PI * 2, false);
       ctx.restore();
+      if (fill) ctx.fill();
+      if (stroke) ctx.stroke();
       break;
+
     }
-    if (styleDict.fill) ctx.fill();
-    if (styleDict.stroke) ctx.stroke();
+
   })
 
   ctx.restore();
@@ -110,7 +119,7 @@ function makeShapes (points) {
 
     function newShape (p) {
       return {
-        type: "path",
+        type: "dot",
         points: [p]
       }
     };
@@ -125,8 +134,9 @@ function makeShapes (points) {
     const last = cur.points.slice(-1)[0];
 
     // Another point in the path
-    if (p.idx == last.idx + 1 && cur.type == "path") {
+    if (p.idx == last.idx + 1 && ["dot", "path"].indexOf(cur.type) >= 0) {
       cur.points.push(p);
+      cur.type = "path";
     }
     // line or circle
     else if (p.idx === last.idx) {

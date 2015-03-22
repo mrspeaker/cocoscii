@@ -39,8 +39,8 @@ The callback function is called once per defined shape. You can use that to alte
 
 ## TODO:
 
+* stroke width too thin compared to ASCIImage
 * implement "ASCIIContextShouldClose"
-* layers!
 
 ## Building
 

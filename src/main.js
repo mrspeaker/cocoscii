@@ -1,16 +1,16 @@
 import cocoscii from "./cocoscii";
 
 const closeImg = cocoscii(`
-    · · · · 1 1 1 · · · ·
+    . · · · 1 1 1 · · · ·
     · · 1 · · · · · 1 · ·
     · 1 · · · · · · · 1 ·
     1 · · 2 · · · 3 · · 1
-    1 · · · · · · · · · 1
-    1 · · · · · · · · · 1
-    1 · · · · · · · · · 1
+    1 · · · # · # · · · 1
+    1 · · · · # · · · · 1
+    1 · · · # · # · · · 1
     1 · · 3 · · · 2 · · 1
-    · 1 · · · · · · · 1 ·
-    · · 1 · · · · · 1 · ·
+    · 1 · . · . · . · 1 ·
+    · · 1 · . · . · . · ·
     · · · 1 1 1 1 1 · · ·
 `, (idx, style) => {
 
@@ -21,7 +21,7 @@ const closeImg = cocoscii(`
   }
 
 });
-
+/*
 const lockImg = cocoscii(`
     · · · · · · · · · · · · · · ·
     · · · · 1 · · · · · · 1 · · ·
@@ -51,8 +51,8 @@ const lockImg = cocoscii(`
   }
 
 });
-
+*/
 document.body.appendChild(closeImg);
-document.body.appendChild(lockImg);
+//document.body.appendChild(lockImg);
 
 export default {};
