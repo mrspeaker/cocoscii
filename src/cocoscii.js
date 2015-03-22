@@ -61,12 +61,12 @@ function makeShapes ([head, ...tail]) {
       cur.points.push(p);
       cur.type = "path";
     }
-    // line or circle
+    // Line or circle
     else if (p.idx === prev.idx) {
       cur.points.push(p);
       cur.type = cur.points.length < 3 ? "line" : "circle";
     }
-    // New shape.
+    // New shape
     else {
       shapes.push(cur);
       cur = newShape(p);
@@ -110,7 +110,7 @@ function drawShapes (shapes, styles, width, height, scale) {
 
   shapes.forEach((s, i) => {
 
-    styles(i, styleDict); // Apply styles function to mutate the shape's styles
+    styles(i, styleDict); // Apply function to mutate the shape's styles
 
     const {type, points} = s;
     const [{x, y}, ...tail] = points;
@@ -128,8 +128,8 @@ function drawShapes (shapes, styles, width, height, scale) {
       if (stroke) ctx.strokeRect(...args);
       break;
 
-    case "path":
     case "line":
+    case "path":
       ctx.beginPath();
       ctx.moveTo(x, y);
       tail.forEach(({x, y}) => ctx.lineTo(x, y));
