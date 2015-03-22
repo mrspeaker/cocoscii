@@ -21,7 +21,7 @@ const closeImg = cocoscii(`
   }
 
 });
-/*
+
 const lockImg = cocoscii(`
     · · · · · · · · · · · · · · ·
     · · · · 1 · · · · · · 1 · · ·
@@ -51,8 +51,8 @@ const lockImg = cocoscii(`
   }
 
 });
-*/
+
 document.body.appendChild(closeImg);
-//document.body.appendChild(lockImg);
+document.body.appendChild(lockImg);
 
 export default {};
