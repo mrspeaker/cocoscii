@@ -15,7 +15,6 @@ function cocoscii (rep, styles = (idx, dict) => {}, scale = 4) {
   const width = rows.reduce((max, row) => Math.max(max, row.length), 0);
   const height = rows.length;
 
-console.log(width, height)
   // Get the control points
   const points = rows
     .map((r, y) => r.map((ch, x) => { return {
@@ -123,7 +122,7 @@ function drawShapes (shapes, styles, width, height, scale) {
     switch (type) {
 
     case "dot":
-      // TODO: this is not correct. See "gridImg" test case
+      // TODO: positioning is not correct. See "gridImg" test case
       const args = [x, y, 1 / width, 1 / height];
       if (fill) ctx.fillRect(...args);
       if (stroke) ctx.strokeRect(...args);
