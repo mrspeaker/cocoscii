@@ -29,12 +29,7 @@ function cocoscii (rep, styles = (idx, dict) => {}, scale = 4) {
   const shapes = makeShapes(points);
 
   // ...and draw them
-  const canvas = drawShapes(
-    shapes,
-    styles,
-    width,
-    height,
-    scale);
+  const canvas = drawShapes(shapes, styles, width, height, scale);
 
   // Save to image
   const img = new Image();
